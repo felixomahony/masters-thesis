@@ -1,6 +1,6 @@
 im = imread("../res/starry_night.jpg");
-im = imgaussfilt(im,6);
-im = imresize(im,1/3);
+im = imgaussfilt(im,20);
+im = imresize(im,1/5);
 
 im_ycbcr = rgb2ycbcr(im);
 im_y = im_ycbcr(:,:,1); %Only look at Y channel
