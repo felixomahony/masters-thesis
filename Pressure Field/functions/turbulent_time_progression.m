@@ -4,7 +4,7 @@ n_points_y = size(U,1);
 n_points_x = size(U,2);
 nu = 1/1000;
 dt = 0.001;
-n_iter = 1000;
+n_iter = 100;
 
 aspect_ratio = n_points_x/n_points_y;
 coordinates_x = ones(n_points_y,1) * linspace(0,aspect_ratio, n_points_x);
@@ -72,6 +72,7 @@ for iter = 1:n_iter
   %curl = sign.(curl) .* sqrt.(abs.(curl) ./ quantile(vec(curl), 0.8))
 end
 % Visualize
-visualise_curl(velocity_x, velocity_y, wavenumbers_x, wavenumbers_y)
+%visualise_curl(velocity_x, velocity_y, wavenumbers_x, wavenumbers_y)
+quiver(reshape(coordinates_x,[numel(coordinates_x),1]),reshape(coordinates_y,[numel(coordinates_x),1]),reshape(velocity_x,[numel(coordinates_x),1]),reshape(velocity_y,[numel(coordinates_x),1]), 'off');
 
 end
