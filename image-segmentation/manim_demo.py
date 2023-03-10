@@ -4,6 +4,7 @@ import pickle
 import numpy as np
 
 
+rgb_bg = ("#a69cacff")
 
 with open('../out/U.pkl', 'rb') as inp:
     U = np.real(pickle.load(inp))
@@ -29,7 +30,7 @@ n_fft_points_y = np.shape(wavenumbers_1d_y)[0]
 wavenumbers_x = np.ones([n_fft_points_y,1]) @ np.array([wavenumbers_1d_x])
 wavenumbers_y = np.array([wavenumbers_1d_x]).T @ np.ones([1,n_fft_points_x])
 
-
+print(U)
 
 def curl_fft_UV(U,V):
     d_u_d_y_fft = 1j * wavenumbers_y * np.fft.fft2(U)
@@ -52,6 +53,8 @@ def interpolate_u_v(x,y):
     if (np.abs(x) > 4):
         return np.zeros([3])
     if (np.abs(y) > 4):
+        return np.zeros([3])
+    if (np.isnan(x) or np.isnan(y)):
         return np.zeros([3])
     x += 4
     y += 4
@@ -97,3 +100,11 @@ class VanGoghVortex(Scene):
         self.add(stream_lines)
         stream_lines.start_animation(warm_up=False, flow_speed=1.5)
         self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
+
+class VanGoghVField(Scene):
+    def construct(self):
+        func = lambda pos: interpolate_u_v(pos[0],pos[1])
+        self.camera.background_color="#161b33"
+        vector_field = ArrowVectorField(func = func, colors = ["#f1dac4", "#a69cacff"])
+        self.add(vector_field)
+        # vector_field.play()
